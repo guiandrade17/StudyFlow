@@ -1,4 +1,4 @@
-from src.core import calcular_proxima_revisao
+from core import calcular_proxima_revisao
 
 def menu():
     while True:

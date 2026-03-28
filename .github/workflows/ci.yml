@@ -23,4 +23,4 @@ jobs:
       - name: Rodar testes
         run: |
           export PYTHONPATH=$(pwd)
-          pytest
+          pytest tests
