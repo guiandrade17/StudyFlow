@@ -14,10 +14,10 @@ O Study Flow é uma aplicação em linha de comando (CLI) que auxilia estudantes
 - Universitários
 - Pessoas que desejam melhorar a organização dos estudos
 
-## ⚙️ Funcionalidades
+## ⚙️ Funcionalidades Principais
 
 - Calcular a próxima data de revisão
-- Interface simples via terminal
+- Interface simples via terminal (CLI)
 - Tratamento de entradas inválidas
 
 ## 🛠️ Tecnologias Utilizadas
@@ -27,10 +27,31 @@ O Study Flow é uma aplicação em linha de comando (CLI) que auxilia estudantes
 - Ruff (linting/análise estática)
 - GitHub Actions (Integração Contínua)
 
-## 📦 Instalação
+## 📦 Instruções de Instalação
 
 Clone o repositório:
 
 ```bash
 git clone https://github.com/guiandrade17/StudyFlow
 cd StudyFlow
+
+Instale as dependências:
+py -m pip install -r requirements.txt
+
+▶️ Instruções de Execução
+py -m src.main
+
+🧪 Instruções para Rodar os Testes
+py -m pytest
+
+🧹 Instruções para Rodar o Lint
+py -m ruff check .
+
+🔢 Versão Atual
+1.0.0
+
+👤 Autor
+Guilherme Brito Andrade
+
+🔗 Link do Repositório Público
+https://github.com/guiandrade17/StudyFlow
