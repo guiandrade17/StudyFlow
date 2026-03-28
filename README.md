@@ -32,5 +32,5 @@ O Study Flow é uma aplicação simples em linha de comando (CLI) que auxilia es
 Clone o repositório:
 
 ```bash
-git clone https://github.com/SEU-USUARIO/studyflow.git
+git clone https://github.com/guiandrade17/StudyFlow
 cd studyflow
