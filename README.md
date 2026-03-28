@@ -2,11 +2,11 @@
 
 ## 📌 Descrição do Problema
 
-Muitos estudantes enfrentam dificuldades para organizar sua rotina de estudos e definir quando revisar conteúdos já estudados. A falta de planejamento pode comprometer a retenção do conhecimento e o desempenho acadêmico.
+Muitos estudantes enfrentam dificuldades para organizar sua rotina de estudos e definir quando revisar conteúdos já estudados. A falta de planejamento compromete a retenção do conhecimento e o desempenho acadêmico.
 
 ## 💡 Proposta da Solução
 
-O Study Flow é uma aplicação simples em linha de comando (CLI) que auxilia estudantes no planejamento de revisões. A aplicação permite calcular automaticamente a próxima data de revisão com base na quantidade de dias informada pelo usuário.
+O Study Flow é uma aplicação em linha de comando (CLI) que auxilia estudantes no planejamento de revisões. A aplicação calcula automaticamente a próxima data de revisão com base na quantidade de dias informada pelo usuário.
 
 ## 👥 Público-Alvo
 
@@ -16,8 +16,8 @@ O Study Flow é uma aplicação simples em linha de comando (CLI) que auxilia es
 
 ## ⚙️ Funcionalidades
 
-- Calcular próxima data de revisão
-- Interface simples via terminal (CLI)
+- Calcular a próxima data de revisão
+- Interface simples via terminal
 - Tratamento de entradas inválidas
 
 ## 🛠️ Tecnologias Utilizadas
@@ -25,12 +25,12 @@ O Study Flow é uma aplicação simples em linha de comando (CLI) que auxilia es
 - Python
 - Pytest (testes automatizados)
 - Ruff (linting/análise estática)
-- GitHub Actions (Integração Contínua - CI)
+- GitHub Actions (Integração Contínua)
 
-## 🚀 Como instalar
+## 📦 Instalação
 
 Clone o repositório:
 
 ```bash
 git clone https://github.com/guiandrade17/StudyFlow
-cd studyflow
+cd StudyFlow
