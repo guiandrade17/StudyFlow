@@ -1,5 +1,7 @@
 # Study Flow
 
+![CI](https://github.com/guiandrade17/StudyFlow/actions/workflows/ci.yml/badge.svg)
+
 ## 📌 Descrição do Problema
 
 Muitos estudantes enfrentam dificuldades para organizar sua rotina de estudos e definir quando revisar conteúdos já estudados. A falta de planejamento compromete a retenção do conhecimento e o desempenho acadêmico.
@@ -41,6 +43,13 @@ py -m pip install -r requirements.txt
 ▶️ Instruções de Execução
 py -m src.main
 
+💻 Exemplo de Uso
+=== Study Flow ===
+1 - Calcular próxima revisão
+2 - Sair
+Digite o número de dias: 3
+Próxima revisão: 30/03/2026
+
 🧪 Instruções para Rodar os Testes
 py -m pytest
 
@@ -55,3 +64,6 @@ Guilherme Brito Andrade
 
 🔗 Link do Repositório Público
 https://github.com/guiandrade17/StudyFlow
+
+
+---
