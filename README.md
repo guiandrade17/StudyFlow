@@ -1,4 +1,5 @@
 # Study Flow
+Projeto desenvolvido para organização de estudos com revisões automatizadas.
 
 ![CI](https://github.com/guiandrade17/StudyFlow/actions/workflows/ci.yml/badge.svg)
 
