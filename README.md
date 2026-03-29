@@ -55,7 +55,7 @@ Próxima revisão: 30/03/2026
 py -m pytest
 
 🧹 Instruções para Rodar o Lint
-py -m ruff check .
+py -m ruff check . --no-cache
 
 🔢 Versão Atual
 1.0.0
