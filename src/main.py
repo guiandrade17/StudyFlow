@@ -1,4 +1,4 @@
-from src.core import calcular_proxima_revisao
+from src.core import calcular_proxima_revisao, obter_frase
 
 def menu():
     while True:
@@ -12,7 +12,11 @@ def menu():
             try:
                 dias = int(input("Digite a quantidade de dias: "))
                 resultado = calcular_proxima_revisao(dias)
+                frase = obter_frase()
+
                 print(f"Próxima revisão: {resultado}")
+                print(f"Frase do dia: {frase}")
+
             except ValueError as e:
                 print(f"Erro: {e}")
 
