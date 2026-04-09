@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from src.core import calcular_proxima_revisao, obter_frase
+from core import calcular_proxima_revisao, obter_frase
 import os
 
 app = Flask(__name__)
