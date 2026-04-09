@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Flow</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            margin: auto;
+        }
+
+        input {
+            padding: 10px;
+            width: 80%;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #22c55e;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #16a34a;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            background: #334155;
+            padding: 15px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📚 Study Flow</h1>
+
+    <div class="container">
+        <form method="POST">
+            <input type="number" name="dias" placeholder="Digite os dias" required>
+            <br>
+            <button type="submit">Calcular</button>
+        </form>
+
+        {% if resultado %}
+        <div class="resultado">
+            <p><strong>Próxima revisão:</strong> {{ resultado }}</p>
+            <p><strong>Frase:</strong> {{ frase }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

@@ -17,9 +17,9 @@ def obter_frase():
 
         if resposta.status_code == 200:
             dados = resposta.json()
-            return dados["content"]
+            return dados.get("content", "Continue estudando, você está no caminho certo! 🚀")
 
-        return "Não foi possível obter frase."
+        return "Continue estudando, você está no caminho certo! 🚀"
 
     except requests.exceptions.RequestException:
-        return "Erro ao conectar com a API."
+        return "Continue estudando, você está no caminho certo! 🚀"
