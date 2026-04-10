@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request
-from core import calcular_proxima_revisao, obter_frase
+from src.core import calcular_proxima_revisao, obter_frase
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), "../templates"))
 
 @app.route("/", methods=["GET", "POST"])
 def index():
