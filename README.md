@@ -54,6 +54,7 @@ py -m src.main
 2 - Sair
 Digite o número de dias: 3
 Próxima revisão: 30/03/2026
+Frase do dia: Continue estudando, você está no caminho certo! 🚀
 
 🧪 Instruções para Rodar os Testes
 py -m pytest
