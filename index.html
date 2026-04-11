@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Flow</title>
+</head>
+<body style="background:#0f172a; color:white; text-align:center; padding:50px;">
+
+    <h1>📚 Study Flow</h1>
+
+    <input type="number" id="dias" placeholder="Digite os dias">
+    <br><br>
+    <button onclick="calcular()">Calcular</button>
+
+    <div id="resultado" style="margin-top:20px;"></div>
+
+    <script>
+        async function calcular() {
+            const dias = document.getElementById("dias").value;
+
+            if (!dias || dias < 0) {
+                alert("Digite um valor válido");
+                return;
+            }
+
+            const hoje = new Date();
+            hoje.setDate(hoje.getDate() + parseInt(dias));
+
+            let frase = "Continue estudando 🚀";
+
+            try {
+                const resposta = await fetch("https://api.quotable.io/random");
+                const dados = await resposta.json();
+                frase = dados.content;
+            } catch {}
+
+            document.getElementById("resultado").innerHTML =
+                `<p>Próxima revisão: ${hoje}</p>
+                 <p>${frase}</p>`;
+        }
+    </script>
+
+</body>
+</html>
