@@ -1,4 +1,8 @@
 # Study Flow
+
+🌐 **Versão Web:**  
+https://guiandrade17.github.io/StudyFlow
+
 Projeto desenvolvido para organização de estudos com revisões automatizadas.
 
 ![CI](https://github.com/guiandrade17/StudyFlow/actions/workflows/ci.yml/badge.svg)
@@ -13,22 +17,23 @@ O Study Flow é uma aplicação em linha de comando (CLI) que auxilia estudantes
 
 ## 👥 Público-Alvo
 
-- Estudantes
-- Universitários
-- Pessoas que desejam melhorar a organização dos estudos
+- Estudantes  
+- Universitários  
+- Pessoas que desejam melhorar a organização dos estudos  
 
 ## ⚙️ Funcionalidades Principais
 
-- Calcular a próxima data de revisão
-- Interface simples via terminal (CLI)
-- Tratamento de entradas inválidas
+- Calcular a próxima data de revisão  
+- Interface simples via terminal (CLI)  
+- Tratamento de entradas inválidas  
 
 ## 🛠️ Tecnologias Utilizadas
 
-- Python
-- Pytest (testes automatizados)
-- Ruff (linting/análise estática)
-- GitHub Actions (Integração Contínua)
+- Python  
+- Pytest (testes automatizados)  
+- Ruff (linting/análise estática)  
+- GitHub Actions (Integração Contínua)  
+- HTML, CSS e JavaScript (versão web)  
 
 ## 📦 Instruções de Instalação
 
@@ -39,32 +44,24 @@ git clone https://github.com/guiandrade17/StudyFlow
 cd StudyFlow
 
 Instale as dependências:
-py -m pip install -r requirements.txt
 
+py -m pip install -r requirements.txt
 ▶️ Instruções de Execução
 py -m src.main
-
 💻 Exemplo de Uso
 === Study Flow ===
 1 - Calcular próxima revisão
 2 - Sair
 Digite o número de dias: 3
 Próxima revisão: 30/03/2026
-
 🧪 Instruções para Rodar os Testes
 py -m pytest
-
 🧹 Instruções para Rodar o Lint
-py -m ruff check . 
-
+py -m ruff check .
 🔢 Versão Atual
+
 1.0.0
 
 👤 Autor
+
 Guilherme Brito Andrade
-
-🔗 Link do Repositório Público
-https://github.com/guiandrade17/StudyFlow
-
-
----

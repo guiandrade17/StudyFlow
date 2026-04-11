@@ -1,44 +1,104 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Study Flow</title>
-</head>
-<body style="background:#0f172a; color:white; text-align:center; padding:50px;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Flow</title>
 
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.container {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: none;
+}
+button {
+    background: #22c55e;
+    color: white;
+    cursor: pointer;
+}
+button:hover {
+    background: #16a34a;
+}
+.resultado {
+    margin-top: 20px;
+    background: #334155;
+    padding: 15px;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
     <h1>📚 Study Flow</h1>
 
     <input type="number" id="dias" placeholder="Digite os dias">
-    <br><br>
     <button onclick="calcular()">Calcular</button>
 
-    <div id="resultado" style="margin-top:20px;"></div>
+    <div id="resultado" class="resultado"></div>
+</div>
 
-    <script>
-        async function calcular() {
-            const dias = document.getElementById("dias").value;
+<script>
+async function calcular() {
+    const dias = document.getElementById("dias").value;
 
-            if (!dias || dias < 0) {
-                alert("Digite um valor válido");
-                return;
-            }
+    if (!dias || dias < 0) {
+        alert("Digite um valor válido");
+        return;
+    }
 
-            const hoje = new Date();
-            hoje.setDate(hoje.getDate() + parseInt(dias));
+    const hoje = new Date();
+    hoje.setDate(hoje.getDate() + parseInt(dias));
 
-            let frase = "Continue estudando 🚀";
+    let frase = "Continue estudando 🚀";
 
-            try {
-                const resposta = await fetch("https://api.quotable.io/random");
-                const dados = await resposta.json();
-                frase = dados.content;
-            } catch {}
+    try {
+        const resposta = await fetch("https://api.quotable.io/random");
+        const dados = await resposta.json();
+        frase = dados.content;
+    } catch {}
 
-            document.getElementById("resultado").innerHTML =
-                `<p>Próxima revisão: ${hoje}</p>
-                 <p>${frase}</p>`;
-        }
-    </script>
+    document.getElementById("resultado").innerHTML = `
+        <p><strong>Próxima revisão:</strong><br>${hoje.toLocaleString()}</p>
+        <p>${frase}</p>
+    `;
+
+    salvarHistorico(dias, hoje, frase);
+}
+
+function salvarHistorico(dias, data, frase) {
+    const historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+    historico.push({
+        dias,
+        data,
+        frase
+    });
+
+    localStorage.setItem("historico", JSON.stringify(historico));
+}
+</script>
 
 </body>
 </html>
