@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Flow</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            margin: auto;
+        }
+
+        input {
+            padding: 10px;
+            width: 80%;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #22c55e;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #16a34a;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            background: #334155;
+            padding: 15px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📚 Study Flow</h1>
+
+    <div class="container">
+        <input type="number" id="dias" placeholder="Digite os dias">
+        <br>
+        <button onclick="calcular()">Calcular</button>
+
+        <div class="resultado" id="resultado" style="display:none;"></div>
+    </div>
+
+    <script>
+        async function calcular() {
+            const dias = document.getElementById("dias").value;
+
+            if (!dias || dias < 0) {
+                alert("Digite um valor válido");
+                return;
+            }
+
+            // calcular data
+            const hoje = new Date();
+            hoje.setDate(hoje.getDate() + parseInt(dias));
+
+            // pegar frase da API
+            let frase = "Continue estudando, você está no caminho certo! 🚀";
+
+            try {
+                const resposta = await fetch("https://api.quotable.io/random");
+                const dados = await resposta.json();
+                frase = dados.content;
+            } catch (e) {
+                console.log("Erro API");
+            }
+
+            const resultadoDiv = document.getElementById("resultado");
+            resultadoDiv.style.display = "block";
+            resultadoDiv.innerHTML = `
+                <p><strong>Próxima revisão:</strong> ${hoje}</p>
+                <p><strong>Frase:</strong> ${frase}</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
