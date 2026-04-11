@@ -36,9 +36,9 @@ O Study Flow é uma aplicação em linha de comando (CLI) que auxilia estudantes
 - HTML, CSS e JavaScript (versão web)  
 
 ## 📦 Instruções de Instalação
-
-Clone o repositório:
 ```bash
+Clone o repositório:
+
 git clone https://github.com/guiandrade17/StudyFlow
 cd StudyFlow
 
