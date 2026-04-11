@@ -56,19 +56,45 @@
     <h1>📚 Study Flow</h1>
 
     <div class="container">
-        <form method="POST">
-            <input type="number" name="dias" placeholder="Digite os dias" required>
-            <br>
-            <button type="submit">Calcular</button>
-        </form>
+        <input type="number" id="dias" placeholder="Digite os dias">
+        <br>
+        <button onclick="calcular()">Calcular</button>
 
-        {% if resultado %}
-        <div class="resultado">
-            <p><strong>Próxima revisão:</strong> {{ resultado }}</p>
-            <p><strong>Frase:</strong> {{ frase }}</p>
-        </div>
-        {% endif %}
+        <div class="resultado" id="resultado" style="display:none;"></div>
     </div>
+
+    <script>
+        async function calcular() {
+            const dias = document.getElementById("dias").value;
+
+            if (!dias || dias < 0) {
+                alert("Digite um valor válido");
+                return;
+            }
+
+            // calcular data
+            const hoje = new Date();
+            hoje.setDate(hoje.getDate() + parseInt(dias));
+
+            // pegar frase da API
+            let frase = "Continue estudando, você está no caminho certo! 🚀";
+
+            try {
+                const resposta = await fetch("https://api.quotable.io/random");
+                const dados = await resposta.json();
+                frase = dados.content;
+            } catch (e) {
+                console.log("Erro API");
+            }
+
+            const resultadoDiv = document.getElementById("resultado");
+            resultadoDiv.style.display = "block";
+            resultadoDiv.innerHTML = `
+                <p><strong>Próxima revisão:</strong> ${hoje}</p>
+                <p><strong>Frase:</strong> ${frase}</p>
+            `;
+        }
+    </script>
 
 </body>
 </html>
