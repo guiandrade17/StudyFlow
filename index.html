@@ -99,28 +99,28 @@ async function calcular() {
     const hoje = new Date();
     hoje.setDate(hoje.getDate() + parseInt(dias));
 
-    // Frase local inicial
+    // Frase instantânea
     let frase = frasesPadrao[Math.floor(Math.random() * frasesPadrao.length)];
 
-    // Mostra resultado imediato
+    // Mostra tudo na hora (SEM delay)
     document.getElementById("resultado").innerHTML = `
         <p><strong>Próxima revisão:</strong><br>${hoje.toLocaleString()}</p>
-        <p id="frase">⏳ Buscando frase...</p>
+        <p id="frase">${frase}</p>
     `;
-
-    try {
-        const resposta = await fetch("https://api.quotable.io/random");
-        const dados = await resposta.json();
-        frase = dados.content;
-    } catch {
-        // Mantém frase local se API falhar
-    }
-
-    // Atualiza frase
-    document.getElementById("frase").innerText = frase;
 
     salvarHistorico(dias, hoje, frase);
     mostrarHistorico();
+
+    // Atualiza com API em segundo plano
+    try {
+        const resposta = await fetch("https://api.quotable.io/random");
+        const dados = await resposta.json();
+
+        document.getElementById("frase").innerText = dados.content;
+
+    } catch {
+        // mantém frase local
+    }
 }
 
 function salvarHistorico(dias, data, frase) {
