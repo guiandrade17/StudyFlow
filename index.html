@@ -14,7 +14,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 .container {
     background: #1e293b;
@@ -40,11 +40,23 @@ button {
 button:hover {
     background: #16a34a;
 }
-.resultado {
+.resultado, .historico {
     margin-top: 20px;
     background: #334155;
     padding: 15px;
     border-radius: 10px;
+}
+.historico-item {
+    font-size: 14px;
+    margin: 5px 0;
+    border-bottom: 1px solid #475569;
+    padding-bottom: 5px;
+}
+.limpar {
+    background: #ef4444;
+}
+.limpar:hover {
+    background: #dc2626;
 }
 </style>
 </head>
@@ -57,6 +69,12 @@ button:hover {
     <button onclick="calcular()">Calcular</button>
 
     <div id="resultado" class="resultado"></div>
+
+    <div class="historico">
+        <h3>📜 Histórico</h3>
+        <div id="listaHistorico"></div>
+        <button class="limpar" onclick="limparHistorico()">Limpar histórico</button>
+    </div>
 </div>
 
 <script>
@@ -71,6 +89,12 @@ async function calcular() {
     const hoje = new Date();
     hoje.setDate(hoje.getDate() + parseInt(dias));
 
+    // Mostra resultado imediato
+    document.getElementById("resultado").innerHTML = `
+        <p><strong>Próxima revisão:</strong><br>${hoje.toLocaleString()}</p>
+        <p id="frase">⏳ Buscando frase...</p>
+    `;
+
     let frase = "Continue estudando 🚀";
 
     try {
@@ -79,12 +103,11 @@ async function calcular() {
         frase = dados.content;
     } catch {}
 
-    document.getElementById("resultado").innerHTML = `
-        <p><strong>Próxima revisão:</strong><br>${hoje.toLocaleString()}</p>
-        <p>${frase}</p>
-    `;
+    // Atualiza frase
+    document.getElementById("frase").innerText = frase;
 
     salvarHistorico(dias, hoje, frase);
+    mostrarHistorico();
 }
 
 function salvarHistorico(dias, data, frase) {
@@ -92,12 +115,36 @@ function salvarHistorico(dias, data, frase) {
 
     historico.push({
         dias,
-        data,
+        data: data.toLocaleString(),
         frase
     });
 
     localStorage.setItem("historico", JSON.stringify(historico));
 }
+
+function mostrarHistorico() {
+    const historico = JSON.parse(localStorage.getItem("historico")) || [];
+    const lista = document.getElementById("listaHistorico");
+
+    lista.innerHTML = "";
+
+    historico.slice(-5).reverse().forEach(item => {
+        lista.innerHTML += `
+            <div class="historico-item">
+                ⏱ ${item.dias} dias → ${item.data}<br>
+                💬 ${item.frase}
+            </div>
+        `;
+    });
+}
+
+function limparHistorico() {
+    localStorage.removeItem("historico");
+    mostrarHistorico();
+}
+
+// Carrega histórico ao abrir
+mostrarHistorico();
 </script>
 
 </body>
