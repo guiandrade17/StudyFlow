@@ -78,6 +78,16 @@ button:hover {
 </div>
 
 <script>
+const frasesPadrao = [
+    "Continue estudando 🚀",
+    "Você está no caminho certo 💪",
+    "Consistência é a chave 🔑",
+    "Pequenos passos todos os dias 👣",
+    "Foco no objetivo 🎯",
+    "Nunca desista 📚",
+    "Seu esforço vai valer a pena ✨"
+];
+
 async function calcular() {
     const dias = document.getElementById("dias").value;
 
@@ -89,19 +99,22 @@ async function calcular() {
     const hoje = new Date();
     hoje.setDate(hoje.getDate() + parseInt(dias));
 
+    // Frase local inicial
+    let frase = frasesPadrao[Math.floor(Math.random() * frasesPadrao.length)];
+
     // Mostra resultado imediato
     document.getElementById("resultado").innerHTML = `
         <p><strong>Próxima revisão:</strong><br>${hoje.toLocaleString()}</p>
         <p id="frase">⏳ Buscando frase...</p>
     `;
 
-    let frase = "Continue estudando 🚀";
-
     try {
         const resposta = await fetch("https://api.quotable.io/random");
         const dados = await resposta.json();
         frase = dados.content;
-    } catch {}
+    } catch {
+        // Mantém frase local se API falhar
+    }
 
     // Atualiza frase
     document.getElementById("frase").innerText = frase;
