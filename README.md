@@ -1,7 +1,7 @@
 # Study Flow
 
 🌐 **Versão Web:**  
-https://guiandrade17.github.io/StudyFlow
+https://guiandrade17.github.io/StudyFlow  
 
 Projeto desenvolvido para organização de estudos com revisões automatizadas.
 
@@ -36,9 +36,8 @@ O Study Flow é uma aplicação em linha de comando (CLI) que auxilia estudantes
 - HTML, CSS e JavaScript (versão web)  
 
 ## 📦 Instruções de Instalação
-```bash
-Clone o repositório:
 
+```bash
 git clone https://github.com/guiandrade17/StudyFlow
 cd StudyFlow
 
@@ -67,5 +66,6 @@ py -m ruff check .
 
 👤 Autor
 Guilherme Brito Andrade
-´´´ 
-Link do Repositório: https://github.com/guiandrade17/StudyFlow
+
+🔗 **Repositório:**  
+https://github.com/guiandrade17/StudyFlow
