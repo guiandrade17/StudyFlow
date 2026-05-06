@@ -76,7 +76,6 @@ py -m ruff check .
 
 👤 Autor
 Guilherme Brito Andrade
-´´´bash
 
 🔗 Repositório
 👉 https://github.com/guiandrade17/StudyFlow
