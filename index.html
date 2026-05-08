@@ -3,162 +3,693 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Study Flow</title>
-
+<title>Study Flow — Organize seus estudos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  /* ─── Reset & Variables ─────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #080d14;
+    --surface:   #0d1520;
+    --card:      #111c2d;
+    --card2:     #162032;
+    --border:    rgba(99,210,255,0.10);
+    --border2:   rgba(99,210,255,0.18);
+    --accent:    #38e6b0;
+    --accent2:   #3ab4f5;
+    --accent3:   #7b6fff;
+    --danger:    #f25c5c;
+    --danger-h:  #c93d3d;
+    --text:      #e2edf8;
+    --muted:     #6888a8;
+    --glow:      rgba(56,230,176,0.18);
+    --glow2:     rgba(58,180,245,0.15);
+    --r:         16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--text);
     min-height: 100vh;
-}
-.container {
-    background: #1e293b;
-    padding: 30px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
-input, button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px 60px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ─── Background ambiance ───────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 55% 40% at 15% 10%, rgba(56,230,176,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 35% at 85% 80%, rgba(58,180,245,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 60% 30%, rgba(123,111,255,0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Animated grid */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(99,210,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99,210,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+    animation: gridPan 60s linear infinite;
+  }
+  @keyframes gridPan {
+    from { background-position: 0 0; }
+    to   { background-position: 48px 48px; }
+  }
+
+  /* ─── Layout wrapper ─────────────────────────────────── */
+  .wrapper {
+    position: relative;
+    z-index: 1;
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: none;
-}
-button {
-    background: #22c55e;
-    color: white;
-    cursor: pointer;
-}
-button:hover {
-    background: #16a34a;
-}
-.resultado, .historico {
-    margin-top: 20px;
-    background: #334155;
-    padding: 15px;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    animation: fadeUp 0.6s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(28px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ─── Header ─────────────────────────────────────────── */
+  .header {
+    text-align: center;
+    padding: 8px 0 4px;
+  }
+  .logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 0 20px var(--glow);
+  }
+  .header h1 {
+    font-size: clamp(1.6rem, 5vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+
+  /* ─── Card ───────────────────────────────────────────── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 28px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+    transition: border-color 0.3s;
+  }
+  .card:hover { border-color: var(--border2); }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title svg { opacity: 0.7; }
+
+  /* ─── Input group ────────────────────────────────────── */
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .input-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .input-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--muted);
+    font-size: 15px;
+    pointer-events: none;
+    transition: color 0.2s;
+  }
+  input[type="number"] {
+    width: 100%;
+    padding: 13px 14px 13px 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 10px;
-}
-.historico-item {
-    font-size: 14px;
-    margin: 5px 0;
-    border-bottom: 1px solid #475569;
-    padding-bottom: 5px;
-}
-.limpar {
-    background: #ef4444;
-}
-.limpar:hover {
-    background: #dc2626;
-}
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 500;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  input[type="number"]::placeholder { color: var(--muted); font-family: 'Sora', sans-serif; font-size: 0.88rem; font-weight: 400; }
+  input[type="number"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(56,230,176,0.12);
+  }
+  input[type="number"]:focus ~ .input-icon,
+  .input-wrap:focus-within .input-icon { color: var(--accent); }
+
+  /* ─── Buttons ────────────────────────────────────────── */
+  .btn {
+    position: relative;
+    width: 100%;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.93rem;
+    font-weight: 600;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+    letter-spacing: 0.2px;
+  }
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.10) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .btn:active { transform: scale(0.98); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #28c495);
+    color: #08150f;
+    box-shadow: 0 4px 20px rgba(56,230,176,0.28);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 6px 28px rgba(56,230,176,0.42);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active { transform: translateY(0) scale(0.98); }
+
+  .btn-danger {
+    background: transparent;
+    border: 1px solid rgba(242,92,92,0.35);
+    color: var(--danger);
+    font-size: 0.82rem;
+    padding: 10px 16px;
+  }
+  .btn-danger:hover {
+    background: rgba(242,92,92,0.10);
+    border-color: var(--danger);
+    box-shadow: 0 0 16px rgba(242,92,92,0.15);
+  }
+
+  /* Loading spinner inside button */
+  .btn-primary .spinner {
+    display: none;
+    width: 16px; height: 16px;
+    border: 2px solid rgba(8,21,15,0.3);
+    border-top-color: #08150f;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .btn-primary.loading .btn-label { display: none; }
+  .btn-primary.loading .spinner { display: block; }
+
+  /* ─── Result panel ───────────────────────────────────── */
+  .resultado-card {
+    background: linear-gradient(135deg, var(--card2), var(--card));
+    border: 1px solid var(--border2);
+    border-radius: var(--r);
+    padding: 24px;
+    display: none;
+    animation: slideIn 0.4s cubic-bezier(.22,1,.36,1) both;
+    position: relative;
+    overflow: hidden;
+  }
+  .resultado-card.show { display: block; }
+  .resultado-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+  }
+
+  @keyframes slideIn {
+    from { opacity:0; transform:translateY(16px) scale(0.98); }
+    to   { opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  .resultado-label {
+    font-size: 0.7rem;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .resultado-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 18px;
+    letter-spacing: 0.5px;
+  }
+
+  .frase-box {
+    background: rgba(56,230,176,0.05);
+    border: 1px solid rgba(56,230,176,0.12);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    color: #a8c4d8;
+    font-style: italic;
+    line-height: 1.6;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+  }
+  .frase-icon { font-size: 18px; flex-shrink: 0; }
+  .frase-loading {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    height: 20px;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: bounce 1.2s infinite ease-in-out;
+    opacity: 0.7;
+  }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%,80%,100% { transform: translateY(0); opacity: 0.5; }
+    40% { transform: translateY(-7px); opacity: 1; }
+  }
+
+  /* Badges */
+  .badge-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .badge-green { background: rgba(56,230,176,0.12); color: var(--accent); border: 1px solid rgba(56,230,176,0.2); }
+  .badge-blue  { background: rgba(58,180,245,0.12); color: var(--accent2); border: 1px solid rgba(58,180,245,0.2); }
+
+  /* ─── Historico ──────────────────────────────────────── */
+  .historico-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .historico-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hist-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    animation: fadeUp 0.35s ease both;
+    transition: border-color 0.2s;
+  }
+  .hist-card:hover { border-color: var(--border2); }
+
+  .hist-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .hist-dias {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: rgba(56,230,176,0.08);
+    padding: 3px 9px;
+    border-radius: 6px;
+  }
+  .hist-data {
+    font-size: 0.74rem;
+    color: var(--muted);
+  }
+  .hist-frase {
+    font-size: 0.82rem;
+    color: #7a99b4;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 24px 0 8px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .empty-state .empty-icon { font-size: 28px; margin-bottom: 8px; opacity: 0.5; }
+
+  /* ─── Footer ─────────────────────────────────────────── */
+  .footer {
+    text-align: center;
+    font-size: 0.73rem;
+    color: var(--muted);
+    margin-top: 8px;
+    opacity: 0.7;
+  }
+
+  /* ─── Responsive ─────────────────────────────────────── */
+  @media (max-width: 480px) {
+    body { padding: 24px 12px 48px; }
+    .card { padding: 20px; }
+    .resultado-card { padding: 18px; }
+    .historico-header { flex-direction: column; align-items: flex-start; }
+  }
 </style>
 </head>
-
 <body>
-<div class="container">
-    <h1>📚 Study Flow</h1>
 
-    <input type="number" id="dias" placeholder="Digite os dias">
-    <button onclick="calcular()">Calcular</button>
+<div class="wrapper">
 
-    <div id="resultado" class="resultado"></div>
-
-    <div class="historico">
-        <h3>📜 Histórico</h3>
-        <div id="listaHistorico"></div>
-        <button class="limpar" onclick="limparHistorico()">Limpar histórico</button>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-row">
+      <div class="logo-icon">📚</div>
+      <h1>Study Flow</h1>
     </div>
+    <p>Planeje suas revisões com inteligência</p>
+  </div>
+
+  <!-- Calculadora -->
+  <div class="card">
+    <div class="card-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Calcular próxima revisão
+    </div>
+
+    <div class="input-group">
+      <label class="input-label" for="dias">Quantos dias até a revisão?</label>
+      <div class="input-wrap">
+        <span class="input-icon">⏱</span>
+        <input type="number" id="dias" placeholder="Ex: 7, 14, 30..." min="0">
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="calcular()" id="btnCalc">
+      <span class="btn-label">✦ Calcular Revisão</span>
+      <div class="spinner"></div>
+    </button>
+  </div>
+
+  <!-- Resultado -->
+  <div class="resultado-card" id="resultado">
+    <div class="resultado-label">📅 Próxima revisão agendada para</div>
+    <div class="resultado-date" id="resultadoData">—</div>
+    <div class="badge-row" id="resultadoBadges"></div>
+    <div class="frase-box">
+      <span class="frase-icon">💬</span>
+      <span id="frase">
+        <span class="frase-loading"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Histórico -->
+  <div class="card">
+    <div class="historico-header">
+      <div class="card-title" style="margin-bottom:0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 0 .5-4"/><polyline points="3 3 3 7 7 7"/></svg>
+        Histórico de revisões
+      </div>
+      <button class="btn btn-danger" onclick="limparHistorico()">🗑 Limpar</button>
+    </div>
+    <div class="historico-list" id="listaHistorico"></div>
+  </div>
+
+  <div class="footer">Study Flow · Organização é a base do aprendizado</div>
+
 </div>
 
 <script>
-const frasesPadrao = [
-    "Continue estudando 🚀",
-    "Você está no caminho certo 💪",
-    "Consistência é a chave 🔑",
-    "Pequenos passos todos os dias 👣",
-    "Foco no objetivo 🎯",
-    "Nunca desista 📚",
-    "Seu esforço vai valer a pena ✨"
-];
+  /* ─── Frases fallback ────────────────────────────────── */
+  const frasesPadrao = [
+    "Continue estudando — cada página é um passo à frente. 🚀",
+    "Você está no caminho certo. Não pare agora! 💪",
+    "Consistência é a chave que abre todas as portas. 🔑",
+    "Pequenos passos todos os dias constroem grandes conquistas. 👣",
+    "Foco no objetivo. O esforço de hoje é o sucesso de amanhã. 🎯",
+    "A persistência é o caminho do êxito. Nunca desista! 📚",
+    "Seu esforço vai valer a pena — confie no processo. ✨",
+    "Estudar é um investimento que nunca perde valor. 💡",
+    "Cada revisão te aproxima do teu melhor resultado. 🏆",
+    "A mente que estuda cresce — continue alimentando a sua. 🌱"
+  ];
 
-async function calcular() {
-    const dias = document.getElementById("dias").value;
+  /* ─── Helpers ────────────────────────────────────────── */
+  function frasePadrao() {
+    return frasesPadrao[Math.floor(Math.random() * frasesPadrao.length)];
+  }
 
-    if (!dias || dias < 0) {
-        alert("Digite um valor válido");
-        return;
+  function formatarData(data) {
+    return data.toLocaleString('pt-BR', {
+      weekday: 'long', day: '2-digit',
+      month: 'long', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  }
+
+  function diasParaLabel(n) {
+    if (n === 0) return 'Hoje';
+    if (n === 1) return 'Amanhã';
+    if (n <= 7)  return `${n} dias`;
+    if (n <= 30) return `${Math.round(n/7)} semana(s)`;
+    return `${Math.round(n/30)} mês(es)`;
+  }
+
+  /* ─── Calcular ───────────────────────────────────────── */
+  async function calcular() {
+    const diasVal = document.getElementById('dias').value;
+    if (diasVal === '' || Number(diasVal) < 0) {
+      pulsarInput();
+      return;
     }
+
+    const dias = parseInt(diasVal);
+    const btn  = document.getElementById('btnCalc');
+
+    // Loading state
+    btn.classList.add('loading');
 
     const hoje = new Date();
-    hoje.setDate(hoje.getDate() + parseInt(dias));
+    hoje.setDate(hoje.getDate() + dias);
 
-    // Frase instantânea
-    let frase = frasesPadrao[Math.floor(Math.random() * frasesPadrao.length)];
+    // Mostrar resultado imediatamente com frase local
+    const fraseLocal = frasePadrao();
+    exibirResultado(dias, hoje, fraseLocal, true);
+    salvarHistorico(dias, hoje, fraseLocal);
+    mostrarHistorico();
 
-    // Mostra tudo na hora (SEM delay)
-    document.getElementById("resultado").innerHTML = `
-        <p><strong>Próxima revisão:</strong><br>${hoje.toLocaleString()}</p>
-        <p id="frase">${frase}</p>
+    btn.classList.remove('loading');
+
+    // Tentar API em segundo plano
+    try {
+      const resp = await fetch('https://api.quotable.io/random');
+      if (!resp.ok) throw new Error('API error');
+      const dados = await resp.json();
+      const fraseApi = `"${dados.content}" — ${dados.author}`;
+      atualizarFrase(fraseApi);
+      // Atualiza a frase no último item do histórico
+      atualizarFraseHistorico(fraseApi);
+    } catch {
+      // Mantém frase local — sem nada a fazer
+    }
+  }
+
+  function exibirResultado(dias, data, frase, loadingApi) {
+    document.getElementById('resultadoData').textContent = formatarData(data);
+
+    document.getElementById('resultadoBadges').innerHTML = `
+      <span class="badge badge-green">⏱ ${diasParaLabel(dias)}</span>
+      <span class="badge badge-blue">📅 ${data.toLocaleDateString('pt-BR')}</span>
     `;
 
-    salvarHistorico(dias, hoje, frase);
-    mostrarHistorico();
-
-    // Atualiza com API em segundo plano
-    try {
-        const resposta = await fetch("https://api.quotable.io/random");
-        const dados = await resposta.json();
-
-        document.getElementById("frase").innerText = dados.content;
-
-    } catch {
-        // mantém frase local
+    if (loadingApi) {
+      document.getElementById('frase').innerHTML = `
+        <span class="frase-loading"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      `;
+      // Após breve momento mostrar frase local enquanto API carrega
+      setTimeout(() => {
+        const el = document.getElementById('frase');
+        if (el && el.querySelector('.frase-loading')) {
+          el.textContent = frase;
+        }
+      }, 800);
+    } else {
+      document.getElementById('frase').textContent = frase;
     }
-}
 
-function salvarHistorico(dias, data, frase) {
-    const historico = JSON.parse(localStorage.getItem("historico")) || [];
+    const card = document.getElementById('resultado');
+    card.classList.remove('show');
+    void card.offsetWidth; // reflow para reactivar animação
+    card.classList.add('show');
+  }
 
-    historico.push({
-        dias,
-        data: data.toLocaleString(),
-        frase
-    });
+  function atualizarFrase(frase) {
+    const el = document.getElementById('frase');
+    if (el) {
+      el.style.opacity = '0';
+      el.style.transition = 'opacity 0.3s';
+      setTimeout(() => {
+        el.textContent = frase;
+        el.style.opacity = '1';
+      }, 300);
+    }
+  }
 
-    localStorage.setItem("historico", JSON.stringify(historico));
-}
+  /* ─── Input pulse (validação visual) ────────────────── */
+  function pulsarInput() {
+    const inp = document.getElementById('dias');
+    inp.style.borderColor = 'var(--danger)';
+    inp.style.boxShadow   = '0 0 0 3px rgba(242,92,92,0.18)';
+    inp.focus();
+    setTimeout(() => {
+      inp.style.borderColor = '';
+      inp.style.boxShadow   = '';
+    }, 1200);
+  }
 
-function mostrarHistorico() {
-    const historico = JSON.parse(localStorage.getItem("historico")) || [];
-    const lista = document.getElementById("listaHistorico");
+  /* ─── Histórico ──────────────────────────────────────── */
+  function salvarHistorico(dias, data, frase) {
+    const hist = JSON.parse(localStorage.getItem('studyflow_historico')) || [];
+    hist.push({ dias, data: data.toISOString(), frase });
+    localStorage.setItem('studyflow_historico', JSON.stringify(hist));
+  }
 
-    lista.innerHTML = "";
-
-    historico.slice(-5).reverse().forEach(item => {
-        lista.innerHTML += `
-            <div class="historico-item">
-                ⏱ ${item.dias} dias → ${item.data}<br>
-                💬 ${item.frase}
-            </div>
-        `;
-    });
-}
-
-function limparHistorico() {
-    localStorage.removeItem("historico");
+  function atualizarFraseHistorico(frase) {
+    const hist = JSON.parse(localStorage.getItem('studyflow_historico')) || [];
+    if (hist.length === 0) return;
+    hist[hist.length - 1].frase = frase;
+    localStorage.setItem('studyflow_historico', JSON.stringify(hist));
     mostrarHistorico();
-}
+  }
 
-// Carrega histórico ao abrir
-mostrarHistorico();
+  function mostrarHistorico() {
+    const hist = JSON.parse(localStorage.getItem('studyflow_historico')) || [];
+    const lista = document.getElementById('listaHistorico');
+
+    if (hist.length === 0) {
+      lista.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          Nenhuma revisão registrada ainda.<br>Calcule sua primeira revisão acima!
+        </div>`;
+      return;
+    }
+
+    lista.innerHTML = '';
+    hist.slice(-5).reverse().forEach((item, i) => {
+      const data = new Date(item.data);
+      const div  = document.createElement('div');
+      div.className = 'hist-card';
+      div.style.animationDelay = `${i * 0.07}s`;
+      div.innerHTML = `
+        <div class="hist-top">
+          <span class="hist-dias">⏱ ${diasParaLabel(item.dias)}</span>
+          <span class="hist-data">${data.toLocaleDateString('pt-BR')} às ${data.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'})}</span>
+        </div>
+        <div class="hist-frase">💬 ${item.frase}</div>
+      `;
+      lista.appendChild(div);
+    });
+  }
+
+  function limparHistorico() {
+    localStorage.removeItem('studyflow_historico');
+    mostrarHistorico();
+    document.getElementById('resultado').classList.remove('show');
+  }
+
+  /* ─── Enter key ──────────────────────────────────────── */
+  document.getElementById('dias').addEventListener('keydown', e => {
+    if (e.key === 'Enter') calcular();
+  });
+
+  /* ─── Init ───────────────────────────────────────────── */
+  mostrarHistorico();
 </script>
-
 </body>
 </html>
