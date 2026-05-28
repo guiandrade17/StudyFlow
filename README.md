@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/Study_Flow-1.0.0-4f8ef7?style=for-the-badge&logo=bookstack&logoColor=white" alt="Study Flow"/>
+<img src="https://img.shields.io/badge/Study_Flow-2.0.0-4f8ef7?style=for-the-badge&logo=bookstack&logoColor=white" alt="Study Flow"/>
 
 # 📚 Study Flow
 
@@ -24,7 +24,7 @@
 
 Muitos estudantes enfrentam dificuldades para organizar sua rotina e definir **quando revisar** conteúdos já estudados. A falta de planejamento compromete a retenção do conhecimento e o desempenho acadêmico.
 
-O **Study Flow** resolve esse problema oferecendo uma aplicação que **calcula automaticamente a próxima data de revisão** com base no intervalo de dias informado. Disponível tanto como ferramenta de linha de comando (CLI) quanto como aplicação web moderna.
+O **Study Flow** resolve esse problema com uma plataforma completa de organização de estudos — desde o cálculo de revisões espaçadas até um dashboard com metas, tarefas, timer Pomodoro e calendário, tudo disponível via CLI (Python) ou pela interface web.
 
 ---
 
@@ -36,6 +36,9 @@ O Study Flow aplica o conceito de **revisão espaçada**, ajudando o estudante a
 
 - 📅 Planejar revisões com datas calculadas automaticamente
 - 📝 Manter um histórico organizado dos conteúdos estudados
+- 🎯 Acompanhar metas e progresso de estudos
+- ✅ Gerenciar tarefas por matéria e prioridade
+- ⏱ Manter o foco com timer Pomodoro integrado
 - 💬 Receber frases motivacionais durante os estudos
 - 🌐 Usar tanto pelo terminal quanto pelo navegador
 
@@ -60,9 +63,18 @@ O Study Flow aplica o conceito de **revisão espaçada**, ajudando o estudante a
 - [x] Integração com API de frases motivacionais
 
 ### 🌐 Versão Web
-- [x] Interface moderna e responsiva
-- [x] Histórico de revisões salvo com `localStorage`
-- [x] Integração com a [Quotable API](https://quotable.io/)
+- [x] Sistema de cadastro e login com autenticação local
+- [x] Dashboard com estatísticas em tempo real
+- [x] Calculadora de revisões com categoria e prioridade
+- [x] Sistema de tarefas com filtros e prioridades
+- [x] Sistema de metas com barra de progresso
+- [x] Timer Pomodoro com sessões e pausas configuráveis
+- [x] Calendário de revisões agendadas
+- [x] Página de estatísticas com gráficos e distribuição por categoria
+- [x] Histórico completo salvo com `localStorage`
+- [x] Integração com a [Quotable API](https://quotable.io/) para frases motivacionais
+- [x] Interface responsiva com tema futurista
+- [x] Notificações toast e micro-animações
 - [x] Deploy automatizado via GitHub Pages
 
 ### 🔧 Infraestrutura
@@ -80,10 +92,11 @@ O Study Flow aplica o conceito de **revisão espaçada**, ajudando o estudante a
 |---|---|---|
 | **Backend / CLI** | Python 3.x | Lógica principal da aplicação |
 | **Frontend** | HTML5, CSS3, JavaScript | Interface web responsiva |
+| **Autenticação** | localStorage + JS | Sistema de login/cadastro local |
 | **Testes** | Pytest | Testes unitários automatizados |
 | **Linting** | Ruff | Análise estática e padronização de código |
 | **CI/CD** | GitHub Actions | Integração e entrega contínua |
-| **Persistência** | localStorage | Histórico de revisões no navegador |
+| **Persistência** | localStorage | Dados do usuário no navegador |
 | **API Externa** | Quotable API | Frases motivacionais dinâmicas |
 | **Deploy** | GitHub Pages | Hospedagem da versão web |
 
@@ -128,9 +141,13 @@ Acesse diretamente pelo navegador:
 
 Ou abra o arquivo `index.html` localmente no seu navegador.
 
+> **Conta demo disponível:** `demo@studyflow.app` · senha `123456`
+
 ---
 
 ## 💻 Exemplo de Uso
+
+### CLI
 
 ```
 ╔══════════════════════════════╗
@@ -150,6 +167,19 @@ Ou abra o arquivo `index.html` localmente no seu navegador.
       você está no caminho certo!" 🚀
   ──────────────────────────────
 ```
+
+### Web — Telas principais
+
+| Tela | Descrição |
+|---|---|
+| 🔐 Login / Cadastro | Autenticação local com validação de campos |
+| 📊 Dashboard | Estatísticas, metas, revisões e tarefas recentes |
+| 📅 Revisões | Calculadora com histórico por matéria e categoria |
+| ✅ Tarefas | Lista com prioridade, categoria e filtros |
+| 🎯 Metas | Progresso visual com barras animadas |
+| ⏱ Pomodoro | Timer de foco com sessões e estatísticas |
+| 📆 Calendário | Visualização das revisões agendadas por dia |
+| 📈 Estatísticas | Gráficos de uso e distribuição por categoria |
 
 ---
 
@@ -213,9 +243,7 @@ StudyFlow/
 │   └── main.py              # Lógica principal da CLI
 ├── tests/
 │   └── test_main.py         # Testes automatizados
-├── index.html               # Interface web
-├── style.css                # Estilos da versão web
-├── script.js                # Lógica da versão web
+├── index.html               # Interface web (SPA completa)
 ├── requirements.txt         # Dependências Python
 ├── .github/
 │   └── workflows/
@@ -227,7 +255,7 @@ StudyFlow/
 
 ## 🔢 Versão
 
-**v1.0.0** — Versão inicial com suporte a CLI, versão web, testes e CI/CD.
+**v2.0.0** — Reescrita completa da interface web com dashboard, autenticação, Pomodoro, metas, tarefas, calendário e estatísticas.
 
 ---
 
